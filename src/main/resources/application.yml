@@ -1,1 +1,45 @@
 
+
+application:
+  api:
+    serviceKey: servicekey
+    baseUrl: http://apis.data.go.kr/B552584
+    returnType: json
+    numOfRows: 100
+    pageNo: 1
+    ver: 1.3
+
+
+#feign client ????
+logging:
+  level:
+    com:
+      chordpli:
+        noguari: debug
+    web: trace
+    org:
+      springframework:
+        web: trace
+
+
+
+spring:
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:8080/noguari
+    username: root
+    password: 1234
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: update
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  jackson:
+    serialization:
+      indent-output: true

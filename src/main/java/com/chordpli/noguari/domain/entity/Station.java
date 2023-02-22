@@ -1,9 +1,12 @@
 package com.chordpli.noguari.domain.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,5 +24,7 @@ public class Station {
   private Integer stationNo;
   private String stationName;
 
-
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "sido_no")
+  private Sido sido;
 }

@@ -1,9 +1,10 @@
 package com.chordpli.noguari.service;
 
 import com.chordpli.noguari.client.AirPollutionClient;
-import com.chordpli.noguari.domain.dto.AirPollutionItems;
-import com.chordpli.noguari.domain.dto.FinalResponse;
+import com.chordpli.noguari.domain.dto.airpollution.AirPollutionItems;
+import com.chordpli.noguari.domain.dto.airpollution.FinalResponse;
 import com.chordpli.noguari.domain.dto.FineDustDataResponse;
+import com.chordpli.noguari.domain.dto.StationResponse;
 import com.chordpli.noguari.domain.entity.Sido;
 import com.chordpli.noguari.domain.entity.Station;
 import com.chordpli.noguari.repository.SidoRepository;
@@ -49,13 +50,7 @@ public class AirPollutionService {
         .findFirst()
         .orElseThrow(IllegalArgumentException::new);
 
-    return FineDustDataResponse.builder()
-        .sido(airPollutionItem.getSidoName())
-        .pm10Value(airPollutionItem.getPm10Value())
-        .pm10Grade1h(airPollutionItem.getPm10Grade1h())
-        .pm25Value(airPollutionItem.getPm25Value())
-        .pm25Grade1h(airPollutionItem.getPm25Grade1h())
-        .build();
+    return FineDustDataResponse.fromEntity(airPollutionItem);
   }
 
   public void saveStationName(FinalResponse list) {
@@ -76,5 +71,20 @@ public class AirPollutionService {
           .build();
       stationRepository.save(station);
     }
+  }
+
+  public List<String> getSidoNames() {
+    List<Sido> sidos = sidoRepository.findAll();
+    return sidos.stream()
+        .map(Sido::getSidoName)
+        .collect(Collectors.toList());
+  }
+
+  public List<StationResponse> getStationName(String sidoName) {
+    List<Station> stations = stationRepository.findAllBySido_SidoName(sidoName);
+
+    return stations.stream()
+        .map(StationResponse::fromEntity)
+        .collect(Collectors.toList());
   }
 }

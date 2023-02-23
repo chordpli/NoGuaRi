@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NoGuaRi</title>
+  <script src="https://code.jquery.com/jquery-3.6.3.js"
+          integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+          crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+<div class="container">
+    <div class="contents">
+      <div class="first-box">
+        <div class="select-sido-title">
+          지역 선택
+        </div>
+        <div class="select-sido-div">
+          <label>
+            <select th:name="sido" class="select-sido-list">
+              <option class="select-sido-items">지역을 선택해주세요.</option>
+              <option class="select-sido-items" th:each="sidoName:${sido}" th:value="${sidoName}" th:text="${sidoName}">
+              </option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="second-box">
+        <div class="select-station-title">
+          관측소 선택
+        </div>
+        <div class="select-station-div">
+          <select th:name="station" class="select-station-list">
+            <option class="select-station-items">지역을 선택해주세요.</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="result">
+
+    </div>
+</div>
+</body>
+<script>
+  $(document).ready(function() {
+    let sidoName = null;
+
+    $('.select-sido-list').change(function() {
+      sidoName = $(this).val();
+      $.ajax({
+        type: 'GET',
+        url: '/v1/' + sidoName,
+        success: function(data) {
+          let options = '<option class="select-station-items">지역을 선택해주세요.</option>';
+          for (let i = 0; i < data.length; i++) {
+            options += '<option class="select-station-items" value="' + data[i]['stationName'] + '">' + data[i]['stationName'] + '</option>';
+          }
+          $('.select-station-list').html(options);
+        },
+        error: function() {
+          alert('Error fetching station data.');
+        }
+      });
+    });
+
+    $('.select-station-list').change(function() {
+      let stationName = $(this).val();
+      $.ajax({
+        type: 'GET',
+        url: '/v1/result/' + sidoName + '/' + stationName,
+        success: function(data) {
+          console.log(data);
+          let options = '';
+          options += `<div class="sido">
+        <span>지역</span>
+        <span> ${data['sido']} </span>
+      </div>
+      <div class="station">
+        <span>관측소</span>
+        <span> ${data['stationName']} </span>
+      </div>
+      <div class="pm10-value">
+        <span>미세먼지</span>
+        <span> ${data['pm10Value']} </span>
+      </div>
+      <div class="pm10-grade">
+        <span>등급</span>
+        <span> ${data['pm10Grade1h']} </span>
+      </div>
+      <div class="pm25-value">
+        <span>초미세먼지</span>
+        <span> ${data['pm25Value']} </span>
+      </div>
+      <div class="pm25-grade">
+        <span>등급</span>
+        <span> ${data['pm25Grade1h']} </span>
+      </div>`
+          $('.result').html(options);
+        },
+        error: function() {
+          alert('Error fetching station data.');
+        }
+      });
+    });
+  });
+
+</script>
+</html>

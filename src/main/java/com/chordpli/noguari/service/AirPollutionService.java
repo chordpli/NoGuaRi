@@ -81,7 +81,7 @@ public class AirPollutionService {
   }
 
   public List<StationResponse> getStationName(String sidoName) {
-    List<Station> stations = stationRepository.findAllBySido_SidoName(sidoName);
+    List<Station> stations = stationRepository.findAllBySido_SidoNameOrderByStationNameAsc(sidoName);
 
     return stations.stream()
         .map(StationResponse::fromEntity)

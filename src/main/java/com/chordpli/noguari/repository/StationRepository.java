@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StationRepository extends JpaRepository<Station, Integer> {
 
-  List<Station> findAllBySido_SidoName(String sidoName);
+  List<Station> findAllBySido_SidoNameOrderByStationNameAsc(String sidoName);
 }

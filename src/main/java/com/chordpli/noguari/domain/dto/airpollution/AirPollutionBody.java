@@ -1,4 +1,4 @@
-package com.chordpli.noguari.domain.dto;
+package com.chordpli.noguari.domain.dto.airpollution;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

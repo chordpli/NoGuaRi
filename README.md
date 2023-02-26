@@ -8,3 +8,8 @@
 - 빌드 : Gradle 7.6
 - DB : AWS RDS
 - Devops : AWS EC2, Docker
+
+## ERD
+![erd](https://user-images.githubusercontent.com/101695482/221416374-6999f70f-d380-426b-a90b-44e3c75e83ac.png)
+
+## [NoGuaRi 배포(클릭)](http://ec2-3-36-115-198.ap-northeast-2.compute.amazonaws.com:8080/)
